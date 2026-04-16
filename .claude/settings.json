@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build *)",
+      "Bash(dotnet test *)",
+      "Bash(dotnet format *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(gh issue *)",
+      "Bash(gh pr *)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/secrets/*)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)",
+      "Bash(curl *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+    ],
+    "PostToolUse": [
+    ]
+  },
+  "model": "claude-sonnet-4-6",
+  "planModel": "claude-opus-4-6",
+  "autoMemoryEnabled": true,
+  "includeEditInstructions": true,
+  "respectGitignore": true
+}
