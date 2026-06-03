@@ -14,6 +14,26 @@ Fornire un insieme centralizzato di regole e best practice per lo sviluppo e la 
 
 ## Utilizzo
 
+### Installa Graphyfy
+
+[website](https://graphifylabs.ai), [github](https://github.com/safishamsi/graphify)
+
+``` bash
+winget install astral-sh.uv
+uv tool install graphyfy
+graphyfy install
+```
+
+### Installare Claude Mem
+
+[website](https://claude-mem.ai), [github](https://github.com/thedotmack/claude-mem)
+
+``` bash
+npx claude-mem install
+```
+
+### Imporare regole aziendali nel progetto
+
 Copia la cartella `.claude` nella root del progetto Sistec.
 
 Esempio di struttura del progetto:
