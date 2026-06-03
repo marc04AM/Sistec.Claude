@@ -18,7 +18,7 @@ Copia la cartella `.claude` nella root del progetto Sistec.
 
 Esempio di struttura del progetto:
 
-```
+``` text
 530X_AAA
 ├─ .claude
 ├─ Sistec.Core
