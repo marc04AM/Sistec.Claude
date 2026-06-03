@@ -32,9 +32,19 @@ graphyfy install
 npx claude-mem install
 ```
 
+### Installare OpenSpec
+
+[website](https://openspec.dev), [github](https://github.com/Fission-AI/OpenSpec/)
+
+``` bash
+npm install -g @fission-ai/openspec@latest
+cd your-project
+openspec init
+```
+
 ### Imporare regole aziendali nel progetto
 
-Copia la cartella `.claude` nella root del progetto Sistec.
+Copia la cartella `.claude` e nella root del progetto Sistec.
 
 Esempio di struttura del progetto:
 
