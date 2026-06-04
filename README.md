@@ -20,7 +20,7 @@ Fornire un insieme centralizzato di regole e best practice per lo sviluppo e la 
 
 ``` bash
 winget install astral-sh.uv
-uv tool install graphyfy
+uv tool install graphifyy
 graphyfy install
 ```
 
