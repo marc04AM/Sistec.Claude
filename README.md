@@ -32,6 +32,15 @@ graphyfy install
 npx claude-mem install
 ```
 
+> **Nota (Node.js v24+):** `npm install` fallisce a causa di `tree-sitter` incompatibile con Node.js v24.
+> Se dopo l'installazione `npx claude-mem start` non avvia il worker, eseguire:
+>
+> ``` bash
+> cd "%USERPROFILE%\.claude\plugins\marketplaces\thedotmack\plugin"
+> bun install
+> npx claude-mem start
+> ```
+
 ### Installare OpenSpec
 
 [website](https://openspec.dev), [github](https://github.com/Fission-AI/OpenSpec/)
