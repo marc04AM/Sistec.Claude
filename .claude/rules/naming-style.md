@@ -11,7 +11,8 @@ paths:
 - **PascalCase**: `HMI`, `Odometer`, `Led`, `NumericInput`, `TabContainer<T>`
 - Form classes with lowercase `frm` prefix: `frmOtherAdvancedSettings`, `frmLoadJobs`, `frmWait`
 - Exception: main form uses PascalCase: `FrmHMI`, `FrmWait`
-- UserControls without prefix: `ProgressView`, `SafetyView`, `PressBrake`
+- **UserControl class names**: PascalCase, no prefix — `ProgressView`, `SafetyView`, `PressBrake`, `Led`, `Button`
+- **UserControl field/variable names** (Designer or code): `uc` prefix — `uc2_Home`, `uc4_Info`
 
 ### Methods and Properties
 - **PascalCase**: `OnProgress()`, `GetConnection()`, `SetState()`
@@ -49,6 +50,8 @@ public enum SistecModeEnum { NotDefined, Manual, Stop, Automatic }
 | Interfaces | `I` + PascalCase | `IDbConnector`, `ITracking` |
 | Parameters | camelCase | `string context` |
 | UI Controls | abbreviated prefix | `btn*`, `lbl*`, `txt*`, `led*` |
+| UserControl (class name) | PascalCase, no prefix | `ProgressView`, `SafetyView` |
+| UserControl (instance/field) | `uc` + index/name | `uc2_Home`, `uc4_Info` |
 
 ---
 

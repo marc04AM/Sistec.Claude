@@ -7,18 +7,17 @@ paths:
 
 ## Essential Commands & Workflow
 
-Always use these exact commands from the solution root (`/`) via the Visual Studio Integrated Terminal.
+Each WinExe project has its own solution file. Run commands from the solution root via the Visual Studio Integrated Terminal.
 
 | Task | Command |
 |------|---------|
-| Build | `dotnet build SolutionName.sln` |
-| Unit Tests | `dotnet test tests/UnitTests/UnitTests.csproj` |
-| Integration Tests | `dotnet test tests/IntegrationTests/IntegrationTests.csproj` |
-| Code Formatting | `dotnet format SolutionName.sln` |
-| Add Migration | `dotnet ef migrations add <Name> --project src/Infrastructure --startup-project src/Api` |
-| Update DB | `dotnet ef database update --project src/Infrastructure --startup-project src/Api` |
+| Build | `dotnet build <ProjectName>.sln` |
+| Unit Tests | `dotnet test <ProjectName>.Tests.csproj` |
+| Code Formatting | `dotnet format <ProjectName>.sln` |
 
-**Workflow Rule:** If you modify `src/Domain` or `src/Application`, you MUST run `dotnet test` before declaring the task complete.
+Examples: `dotnet build Sistec.5309AB.sln`, `dotnet build Sistec.BS.sln`
+
+**Workflow Rule:** After modifying any file in a Communication or Business Logic layer, run `dotnet build` to verify no boundary violations were introduced.
 
 ---
 

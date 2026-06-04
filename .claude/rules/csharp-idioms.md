@@ -207,11 +207,53 @@ foreach (var (_, plc) in Configuration.PlcConfig) { }
 - Use interfaces and polymorphism instead of `MethodInfo.Invoke`.
 - **Exception:** Reflection is tolerable only inside infrastructure-level framework code (e.g., custom DI registration, EF Core configuration scanning) and must be documented with `<remarks>`.
 
-### OOP + Functional Programming Hybrid
-- **OOP for structure:** use encapsulation, polymorphism, and inheritance to model domain boundaries and enforce invariants.
-- **FP for behavior:** use pure functions (no side-effects), immutability, and composition for data transformations and business rules.
-- Use LINQ pipelines for collection transformations. Avoid imperative `for`/`foreach` loops when a declarative query is clearer.
-- Keep side-effects (I/O, DB, logging) at the edges; core logic must remain pure and testable.
+### OOP + Functional Programming — No Procedural Code
+
+**Absolute rule:** zero procedural code. This applies to every file, every change, every snippet.
+
+Banned patterns:
+- Standalone helper methods with no owning object: `CopyJobDataFields()`, `BuildDto()`, `MapToEntity()`
+- `static` utility/helper classes (bags of functions)
+- Imperative `for`/`foreach` when a LINQ pipeline or functional composition is equivalent
+- Methods that mutate a parameter passed by reference ("output parameter" style)
+- Anemic domain models: classes with only `{ get; set; }` properties and zero behavior
+
+**OOP for structure:** encapsulation, polymorphism, and inheritance model domain boundaries and enforce invariants. Domain rules live inside the entity or value object that owns the data — not in a separate `*Helper` or `*Util` class.
+
+**FP for behavior:** pure functions (no side-effects), immutability, and composition for all data transformations. Side-effects (I/O, DB, logging) are pushed to the edges; core logic stays pure and testable.
+
+**DDD style (Zoran Horvat):**
+- Value objects are `record` types with `private` constructors and a `static Create(...)` factory that returns `AsyncPayload<T>`
+- Entities expose behavior methods that return new state rather than mutating in place
+- `CopyJobDataFields(source, dest)` → wrong. The entity exposes `job.WithUpdatedFields(source)` that returns a new instance
+- Collections on domain objects are `IReadOnlyList<T>`; mutation goes through explicit domain methods
+
+```csharp
+// WRONG — procedural helper
+static void CopyJobDataFields(Job source, Job dest)
+{
+    dest.Name = source.Name;
+    dest.Quantity = source.Quantity;
+}
+
+// RIGHT — behavior on the domain object
+public record Job(string Name, int Quantity)
+{
+    public Job WithFields(Job source) => this with { Name = source.Name, Quantity = source.Quantity };
+}
+```
+
+```csharp
+// WRONG — imperative loop
+var names = new List<string>();
+foreach (var job in jobs)
+    if (job.IsActive) names.Add(job.Name);
+
+// RIGHT — declarative pipeline
+var names = jobs.Where(j => j.IsActive).Select(j => j.Name).ToList();
+```
+
+Keep side-effects (I/O, DB, logging) at the edges; core domain logic must remain pure and testable.
 
 ### Minimal Scope
 - Declare variables at the point of first use, inside the innermost block.

@@ -54,13 +54,15 @@ Rules:
 ```csharp
 public class JobRepositoryAsync : IRepositoryAsync<Job>
 {
-    private IDbConnector DB;
+    private readonly IDbConnector _db;
+
+    public JobRepositoryAsync(IDbConnector db) => _db = db;
 
     public async Task<AsyncPayload<IEnumerable<Job>>> GetAllAsync()
     {
         try
         {
-            var result = await DB.GetConnection().GetAllAsync<Job>();
+            var result = await _db.GetConnection().GetAllAsync<Job>();
             return AsyncPayload<IEnumerable<Job>>.Success(result);
         }
         catch (Exception e)

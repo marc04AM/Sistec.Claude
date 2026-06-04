@@ -21,12 +21,30 @@
   },
   "hooks": {
     "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/graphify-nudge.py"
+          }
+        ]
+      }
     ],
     "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/build-reminder.py"
+          }
+        ]
+      }
     ]
   },
   "model": "claude-sonnet-4-6",
-  "planModel": "claude-opus-4-6",
+  "planModel": "claude-opus-4-8",
   "autoMemoryEnabled": true,
   "includeEditInstructions": true,
   "respectGitignore": true

@@ -38,6 +38,39 @@ public async Task<AsyncPayload<IEnumerable<Job>>> GetAllAsync()
 if (!p.IsSuccess) return;
 ```
 
+### Functional Composition (Map / Bind)
+Extend `AsyncPayload<T>` with these two methods to enable railway-oriented chaining without nested `if (!p.IsSuccess)` checks:
+
+```csharp
+// Map: transform the value when successful, propagate failure unchanged
+public AsyncPayload<TOut> Map<TOut>(Func<T, TOut> transform)
+    => IsSuccess ? AsyncPayload<TOut>.Success(transform(Value!)) : AsyncPayload<TOut>.Fail(Exception!);
+
+// Bind: chain an operation that itself returns AsyncPayload (flatMap)
+public AsyncPayload<TOut> Bind<TOut>(Func<T, AsyncPayload<TOut>> next)
+    => IsSuccess ? next(Value!) : AsyncPayload<TOut>.Fail(Exception!);
+
+// Async variants
+public async Task<AsyncPayload<TOut>> MapAsync<TOut>(Func<T, Task<TOut>> transform)
+    => IsSuccess
+        ? AsyncPayload<TOut>.Success(await transform(Value!).ConfigureAwait(false))
+        : AsyncPayload<TOut>.Fail(Exception!);
+
+public async Task<AsyncPayload<TOut>> BindAsync<TOut>(Func<T, Task<AsyncPayload<TOut>>> next)
+    => IsSuccess
+        ? await next(Value!).ConfigureAwait(false)
+        : AsyncPayload<TOut>.Fail(Exception!);
+```
+
+Usage — pipeline without nested guards:
+```csharp
+var result = await repo.GetAsync(id)
+    .MapAsync(plan => plan with { Status = PlanStatus.Active })
+    .BindAsync(plan => repo.UpdateAsync(plan));
+
+if (!result.IsSuccess) return;
+```
+
 ### Validation Guards (Fail-Fast)
 All precondition checks MUST appear at the top of the method, before any business logic:
 ```csharp
