@@ -33,7 +33,8 @@ Every line of code you write must be something Zoran Horvat would approve of.
 - NO JARGON: Ban words like "leverage", "delve", "synergy", or "paradigm".
 - THE PASTA TEST: Every sentence must contain specific, actionable technical details related to this C# solution. Delete generic filler.
 - DEFAULT TO ACTION: Do not explain what you are going to do. Just do it or output the requested code.
-- THINK FIRST: Always plan complex C# architectural changes or bug fixes inside `<thinking>` tags before outputting the final result or writing to files.
+- THINK FIRST: For complex architectural changes or bug fixes, plan inside `<thinking>` tags before writing code. This is internal reasoning, not output.
+- DEFAULT TO ACTION is complementary: output code directly — no preamble, no "I will now do X". THINK FIRST happens silently before the first token of output.
 
 </system_constraints>
 
@@ -43,7 +44,7 @@ Always elaborate and process user requests as follows:
 
 1. Analyze the request.
 2. Find context: gather all related code, dependencies, and call sites.
-3. Plan the implementation, alwayts use plan mode, unless i'm using OpenSpec.
+3. Plan the implementation, always use plan mode, unless I'm using OpenSpec.
 4. Evaluate if a **team of agents**, an **agent loop** or an **agent swarm** could be used to improve the result.
 5. **Impact Analysis (mandatory before any modification):**
    - Trace every caller, subscriber, and dependent of the objects/functions being modified.
@@ -66,9 +67,10 @@ Always elaborate and process user requests as follows:
 
 ```text
 .claude/
-  agents/       — AI agents (developer: multi-file feature/fix agent)
-  commands/     — Slash commands (add-doc)
+  commands/     — Slash commands (add-doc, opsx/*)
+  hooks/        — Hook scripts (graphify-nudge, build-reminder)
   rules/        — Coding guardrails scoped to file patterns
+  skills/       — Local skill definitions (graphify, openspec, karpathy)
   settings.json — Permissions, model, hooks config
   CLAUDE.md     — This file (project brain)
 ```
@@ -97,6 +99,7 @@ All coding rules are in `.claude/rules/`. Key files:
 - **events-delegates.md** — event declaration, subscription safety
 - **ui-controls.md** — WinForms lifecycle, controls, dialogs, localization
 - **workflow.md** — build/test commands, team workflow
+- **tests.md** — test naming, AAA structure, AsyncPayload assertions, allowed mocks
 
 ## graphify
 
