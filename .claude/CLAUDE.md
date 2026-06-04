@@ -36,22 +36,33 @@ Every line of code you write must be something Zoran Horvat would approve of.
 - THINK FIRST: For complex architectural changes or bug fixes, plan inside `<thinking>` tags before writing code. This is internal reasoning, not output.
 - DEFAULT TO ACTION is complementary: output code directly — no preamble, no "I will now do X". THINK FIRST happens silently before the first token of output.
 
+**PROMPT & DATA FIDELITY (non-negotiable):**
+
+- Treat the prompt and the supplied data as immutable source of truth. Never rewrite, "improve", reinterpret, or silently widen/narrow the request. Solve exactly what was asked — nothing more, nothing less.
+- Never invent, alter, or fabricate input data, parameters, signatures, types, or file contents. If a value, type, or API is unknown, read the real source (e.g. `PopLogic.cs`) — do not assume its shape.
+- Every assumption, hypothesis, and plan step must be proven against the actual prompt and the real code/data it touches, cited as `file.cs:line`. An unverified assumption is a stop condition: verify it before writing any code.
+- When the prompt is ambiguous or under-specified, surface the ambiguity and ask — do not paper over it with a guess.
+- Run a counter-proof on every conclusion: state what would falsify it, then confirm the real code/data does not falsify it.
+
 </system_constraints>
 
 ## Agentic System
 
 Always elaborate and process user requests as follows:
 
-1. Analyze the request.
-2. Find context: gather all related code, dependencies, and call sites.
-3. Plan the implementation, always use plan mode, unless I'm using OpenSpec.
-4. Evaluate if a **team of agents**, an **agent loop** or an **agent swarm** could be used to improve the result.
-5. **Impact Analysis (mandatory before any modification):**
+1. **Analyze the request.** Restate the literal goal in one line. Do not add, drop, or reinterpret any requirement (see PROMPT & DATA FIDELITY).
+2. **Find context:** gather all related code, dependencies, and call sites. Read the actual targets (e.g. `PopLogic.cs`) — never assume their shape.
+3. **Plan the implementation,** always use plan mode, unless I'm using OpenSpec.
+4. **Conformance check (mandatory):** prove every assumption, hypothesis, and plan step against the prompt and the real code/data it touches. List each one with its confirming `file.cs:line`. Any unconfirmed item is a stop condition — verify it before continuing. Never proceed on a guess.
+5. Evaluate if a **team of agents**, an **agent loop** or an **agent swarm** could be used to improve the result.
+6. **Impact Analysis (mandatory before any modification):**
    - Trace every caller, subscriber, and dependent of the objects/functions being modified.
    - Produce a line-by-line diff comparing the current state with the proposed change.
    - Present the diff to the user for review **before** applying any edit.
-6. Produce the modification.
-7. Write a `.md` document in `.\.claude\claude-archive` summarizing what was done, what changed, and why.
+7. **Test-first gate (mandatory — see `.claude/rules/tdd-verification.md`):** before touching production code, design and write the tests that encode the prompt's expected inputs and outputs. Lock them — tests are a contract and are never weakened, deleted, or rewritten to make code pass. For risky or unfamiliar mechanics, first prove the approach in a throwaway sandbox spike, then promote the verified behaviour into a real test.
+8. **Produce the modification** — write only the code needed to satisfy the locked tests, in conformance with the rules in `.claude/rules/`.
+9. **Run & verify:** execute the tests, compare each result against the starting parameters and the expected output. On failure, fix the production code (never the tests) and re-run until green. A change is "done" only when every locked test passes.
+10. Write a `.md` document in `.\.claude\claude-archive` summarizing what was done, what changed, and why.
 
 ## Tech Stack
 
@@ -100,6 +111,7 @@ All coding rules are in `.claude/rules/`. Key files:
 - **ui-controls.md** — WinForms lifecycle, controls, dialogs, localization
 - **workflow.md** — build/test commands, team workflow
 - **tests.md** — test naming, AAA structure, AsyncPayload assertions, allowed mocks
+- **tdd-verification.md** — prompt/data fidelity, test-first gate, locked-test contract, sandbox spikes, conformance verification
 
 ## graphify
 
