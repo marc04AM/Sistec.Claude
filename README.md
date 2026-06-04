@@ -4,8 +4,12 @@ Questo repository contiene le regole e le istruzioni di codice per l'agente inte
 
 ## Contenuto
 
+- `.claude/CLAUDE.md` — project brain: persona, workflow agentico, tech stack, quick reference.
 - `.claude/rules/` — linee guida specifiche per file C# e per l'architettura del progetto.
-- `.claude/settings.json` — configurazione delle autorizzazioni e dei modelli.
+- `.claude/hooks/` — script Python eseguiti da Claude Code prima/dopo ogni tool call.
+- `.claude/commands/` — slash commands personalizzati (`add-doc`, `opsx/*`).
+- `.claude/skills/` — skill locali (`graphify`, `openspec`, `karpathy-guidelines`).
+- `.claude/settings.json` — configurazione permessi, modelli e hooks.
 - `README.md` — descrizione del repository.
 
 ## Scopo
@@ -21,7 +25,7 @@ Fornire un insieme centralizzato di regole e best practice per lo sviluppo e la 
 ``` bash
 winget install astral-sh.uv
 uv tool install graphifyy
-graphyfy install
+graphify install
 ```
 
 ### Installare Claude Mem
@@ -51,7 +55,7 @@ cd your-project
 openspec init
 ```
 
-### Imporare regole aziendali nel progetto
+### Importare regole aziendali nel progetto
 
 Copia la cartella `.claude` e nella root del progetto Sistec.
 
