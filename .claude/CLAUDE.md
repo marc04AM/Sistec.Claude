@@ -59,9 +59,9 @@ Always elaborate and process user requests as follows:
    - Trace every caller, subscriber, and dependent of the objects/functions being modified.
    - Produce a line-by-line diff comparing the current state with the proposed change.
    - Present the diff to the user for review **before** applying any edit.
-7. **Test-first gate (mandatory — see `.claude/rules/tdd-verification.md`):** before touching production code, design and write the tests that encode the prompt's expected inputs and outputs. Lock them — tests are a contract and are never weakened, deleted, or rewritten to make code pass. For risky or unfamiliar mechanics, first prove the approach in a throwaway sandbox spike, then promote the verified behaviour into a real test.
+7. **Test-first gate (mandatory):** invoke `/tdd` to orchestrate the full Red→Green→Refactor cycle. The locked-test contract (`tdd-verification.md §2`) is always active — tests are never weakened, deleted, or rewritten to make code pass.
 8. **Produce the modification** — write only the code needed to satisfy the locked tests, in conformance with the rules in `.claude/rules/`.
-9. **Run & verify:** execute the tests, compare each result against the starting parameters and the expected output. On failure, fix the production code (never the tests) and re-run until green. A change is "done" only when every locked test passes.
+9. **Run & verify:** `/tdd` handles this. Done = build clean + every locked test green + results match prompt expectations.
 10. Write a `.md` document in `.\.claude\claude-archive` summarizing what was done, what changed, and why.
 
 ## Tech Stack
@@ -111,7 +111,11 @@ All coding rules are in `.claude/rules/`. Key files:
 - **ui-controls.md** — WinForms lifecycle, controls, dialogs, localization
 - **workflow.md** — build/test commands, team workflow
 - **tests.md** — test naming, AAA structure, AsyncPayload assertions, allowed mocks
-- **tdd-verification.md** — prompt/data fidelity, test-first gate, locked-test contract, sandbox spikes, conformance verification
+- **tdd-verification.md** — prompt/data fidelity (always-on), locked-test contract (always-on)
+
+Skills (invoke explicitly):
+
+- **`/tdd`** — orchestrates Red→Green→Refactor cycle, sandbox spike, run & verify checklist
 
 ## graphify
 
