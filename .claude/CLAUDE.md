@@ -23,6 +23,8 @@ Every line of code you write must be something Zoran Horvat would approve of.
 - Mutation of objects passed as parameters ("output parameter" style)
 - Anemic domain models (classes with only properties and no behavior)
 
+**Exception**: extension methods used for composition (`SafeInvoke`, `Forget()`, LINQ-style pipeline extensions) are documented project patterns, not procedural code.
+
 **Domain-Driven Design (DDD) is preferred** when modelling domain concepts:
 
 - Encapsulate domain rules inside the entity or value object that owns them
@@ -33,7 +35,7 @@ Every line of code you write must be something Zoran Horvat would approve of.
 - NO JARGON: Ban words like "leverage", "delve", "synergy", or "paradigm".
 - THE PASTA TEST: Every sentence must contain specific, actionable technical details related to this C# solution. Delete generic filler.
 - DEFAULT TO ACTION: Do not explain what you are going to do. Just do it or output the requested code.
-- THINK FIRST: For complex architectural changes or bug fixes, plan inside `<thinking>` tags before writing code. This is internal reasoning, not output.
+- THINK FIRST: For complex architectural changes or bug fixes, reason internally before writing code. Internal reasoning never appears in the output.
 - DEFAULT TO ACTION is complementary: output code directly — no preamble, no "I will now do X". THINK FIRST happens silently before the first token of output.
 
 </system_constraints>
@@ -44,14 +46,13 @@ Always elaborate and process user requests as follows:
 
 1. Analyze the request.
 2. Find context: gather all related code, dependencies, and call sites.
-3. Plan the implementation, always use plan mode, unless I'm using OpenSpec.
-4. Evaluate if a **team of agents**, an **agent loop** or an **agent swarm** could be used to improve the result.
+3. Plan the implementation. Use plan mode for multi-file or architectural changes; skip it for single-file fixes and OpenSpec flows.
+4. For solution-wide tasks (multi-project refactors, mass migrations), evaluate if a **team of agents** or an **agent loop** improves the result. Skip for ordinary changes.
 5. **Impact Analysis (mandatory before any modification):**
    - Trace every caller, subscriber, and dependent of the objects/functions being modified.
-   - Produce a line-by-line diff comparing the current state with the proposed change.
-   - Present the diff to the user for review **before** applying any edit.
+   - Diff review happens in plan mode and in Visual Studio's Git Changes window (see workflow.md) — do not paste full diffs in chat.
 6. Produce the modification.
-7. Write a `.md` document in `.\.claude\claude-archive` summarizing what was done, what changed, and why.
+7. For non-trivial changes, write a `.md` document in `.\.claude\claude-archive` summarizing what was done, what changed, and why. The folder is local history, excluded from version control.
 
 ## Tech Stack
 
@@ -67,7 +68,8 @@ Always elaborate and process user requests as follows:
 
 ```text
 .claude/
-  commands/     — Slash commands (add-doc, opsx/*)
+  claude-archive/ — Change summaries written by Claude (local, gitignored)
+  commands/     — Slash commands (add-doc)
   hooks/        — Hook scripts (graphify-nudge, build-reminder)
   rules/        — Coding guardrails scoped to file patterns
   skills/       — Local skill definitions (graphify, openspec, karpathy)
@@ -79,7 +81,7 @@ Always elaborate and process user requests as follows:
 
 Apply these before everything else, on every request.
 
-1. **Recall before reading.** Before reading any file, first recall what is already known from claude-mem and use graphify to traverse the codebase. Start from what you already know.
+1. **Recall before reading.** Before reading any file, first recall what is already known (claude-mem, when installed) and use graphify to traverse the codebase. Start from what you already know.
 2. **Don't re-read what you already know.** Only read what is genuinely new or unverified.
 
 ---
@@ -104,7 +106,7 @@ All coding rules are in `.claude/rules/`. Key files:
 ## graphify
 
 This project has a knowledge graph at `graphify-out/` with god nodes, community structure, and cross-file relationships.
-If the knowledge graph doesn't exit skip this untill the user manually create it
+If the knowledge graph doesn't exist, skip this until the user manually creates it
 
 Rules:
 

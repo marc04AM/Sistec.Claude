@@ -2,8 +2,11 @@ import json, sys, os, re
 
 try:
     d = json.load(sys.stdin)
+    tool = d.get('tool_name', '')
     cmd = d.get('tool_input', {}).get('command', '')
-    if re.search(r'grep|rg |ripgrep|find |fd |ack |ag ', cmd) and os.path.exists('graphify-out/graph.json'):
+    is_search = tool in ('Grep', 'Glob') or re.search(r'\b(grep|rg|ripgrep|fd|ack|ag)\b|\bfind ', cmd)
+    root = os.environ.get('CLAUDE_PROJECT_DIR', '.')
+    if is_search and os.path.exists(os.path.join(root, 'graphify-out', 'graph.json')):
         print(json.dumps({
             'hookSpecificOutput': {
                 'hookEventName': 'PreToolUse',

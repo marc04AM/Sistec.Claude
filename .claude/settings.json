@@ -7,8 +7,12 @@
       "Bash(git status)",
       "Bash(git diff *)",
       "Bash(git log *)",
-      "Bash(gh issue *)",
-      "Bash(gh pr *)"
+      "Bash(gh issue list *)",
+      "Bash(gh issue view *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh pr checks *)"
     ],
     "deny": [
       "Read(.env)",
@@ -22,11 +26,11 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash",
+        "matcher": "Bash|Grep|Glob",
         "hooks": [
           {
             "type": "command",
-            "command": "python .claude/hooks/graphify-nudge.py"
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/graphify-nudge.py\""
           }
         ]
       }
@@ -37,7 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python .claude/hooks/build-reminder.py"
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/build-reminder.py\""
           }
         ]
       }
@@ -48,8 +52,6 @@
     "type": "command",
     "command": "bash \"./.claude/statusline-command.sh\""
   },
-  "planModel": "claude-opus-4-8",
   "autoMemoryEnabled": true,
-  "includeEditInstructions": true,
   "respectGitignore": true
 }

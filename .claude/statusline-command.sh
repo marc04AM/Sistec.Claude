@@ -8,7 +8,7 @@ input=$(cat)
 model=$(printf '%s' "$input" | jq -r '.model.display_name // empty')
 cdir=$(printf '%s' "$input"  | jq -r '.workspace.current_dir // .cwd // empty')
 used=$(printf '%s' "$input"  | jq -r '.context_window.used_percentage // empty')
-effort=$(jq -r '.effortLevel // empty' "$HOME/.claude/settings.json" 2>/dev/null)
+effort=$(printf '%s' "$input" | jq -r '.effort.level // empty')
 
 # basename of current dir (handle both / and \ separators)
 dir_name="${cdir//\\//}"; dir_name="${dir_name%/}"; dir_name="${dir_name##*/}"

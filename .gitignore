@@ -1,3 +1,6 @@
 .vs
 .DS_Store
 bash.exe.stackdump
+graphify-out/
+.claude/settings.local.json
+.claude/claude-archive/
