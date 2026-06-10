@@ -36,8 +36,6 @@ uv tool install graphifyy
 graphify install
 ```
 
-> **Nota:** il pacchetto PyPI è `graphifyy` (doppia y, voluto — `graphify` su PyPI non è affiliato); il comando CLI resta `graphify`.
-
 ### Installare Claude Mem
 
 [website](https://claude-mem.ai), [github](https://github.com/thedotmack/claude-mem)
@@ -45,16 +43,6 @@ graphify install
 ``` bash
 npx claude-mem install
 ```
-
-> **Nota (Windows):** dalla **v13.4.1** i fix per connessione MCP, cattura degli hook e avvio del worker sono upstream — aggiornare claude-mem invece di patchare.
-> Restano due problemi che si ripresentano a ogni auto-update: `node_modules` mancanti nella cache (`Cannot find module 'zod/v3'`) e flickering di `cmd.exe` a ogni hook.
-> Fix: [claude-mem-patch](https://github.com/marc04AM/claude-mem-patch) — clonare la repo ed eseguire lo script (idempotente) dopo ogni auto-update:
->
-> ``` powershell
-> powershell -ExecutionPolicy Bypass -File <clone>\fix-claude-mem-deps.ps1
-> ```
->
-> Opzionale: hook di avvio in `~/.claude/settings.json` (timeout 180 s) per eseguirlo automaticamente — istruzioni nella repo della patch.
 
 ### Installare OpenSpec
 
@@ -68,7 +56,7 @@ openspec init
 
 ### Importare regole aziendali nel progetto
 
-Copia la cartella `.claude` nella root del progetto Sistec.
+Copia la cartella `.claude` nella root del progetto a cui stai lavorando.
 
 Esempio di struttura del progetto:
 
