@@ -24,7 +24,7 @@ Fornire un insieme centralizzato di regole e best practice per lo sviluppo e la 
 
 - **Git for Windows** (Git Bash) — esegue hooks e statusline.
 - **Python 3** nel PATH come `python` — esegue gli script in `.claude/hooks/`.
-- **jq** (`winget install jqlang.jq`) e un **Nerd Font** nel terminale — richiesti dalla statusline.
+- **Nerd Font** nel terminale — richiesti dalla statusline.
 
 ### Installa Graphify
 
