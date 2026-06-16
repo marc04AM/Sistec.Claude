@@ -52,7 +52,7 @@ Always elaborate and process user requests as follows:
    - Trace every caller, subscriber, and dependent of the objects/functions being modified.
    - Diff review happens in plan mode and in Visual Studio's Git Changes window (see workflow.md) — do not paste full diffs in chat.
 6. Produce the modification.
-7. For non-trivial changes, write a `.md` document in `.\.claude\claude-archive` summarizing what was done, what changed, and why. The folder is local history, excluded from version control.
+7. For non-trivial changes, write **one summary file per change** in `.\.claude\claude-archive\` (`YYYY-MM-DD-<slug>.md`) covering what changed and why — or run `/archive`. This is the project's local change history (gitignored, not synced by `sync.ps1`); it is **never** a single ever-growing log.
 
 ## Tech Stack
 
@@ -69,8 +69,8 @@ Always elaborate and process user requests as follows:
 ```text
 .claude/
   claude-archive/ — Change summaries written by Claude (local, gitignored)
-  commands/     — Slash commands (add-doc)
-  hooks/        — Hook scripts (graphify-nudge, build-reminder)
+  commands/     — Slash commands (add-doc, archive)
+  hooks/        — Hook scripts (graphify-nudge, build-reminder, archive-recall)
   rules/        — Coding guardrails scoped to file patterns
   skills/       — Local skill definitions (graphify, openspec, karpathy)
   settings.json — Permissions, model, hooks config
@@ -83,6 +83,10 @@ Apply these before everything else, on every request.
 
 1. **Recall before reading.** Before reading any file, first recall what is already known (claude-mem, when installed) and use graphify to traverse the codebase. Start from what you already know.
 2. **Don't re-read what you already know.** Only read what is genuinely new or unverified.
+
+## Governance
+
+- **Ported-first.** When a class exists as a canonical + a ported copy, edit only the ported copy. Leave the canonical untouched until the change is validated, then sync it back as a separate step; note any divergence created between copies.
 
 ---
 
