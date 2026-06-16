@@ -6,8 +6,8 @@ Questo repository contiene le regole e le istruzioni di codice per l'agente inte
 
 - `.claude/CLAUDE.md` — project brain: persona, workflow agentico, tech stack, quick reference.
 - `.claude/rules/` — linee guida specifiche per file C# e per l'architettura del progetto.
-- `.claude/hooks/` — script Python eseguiti da Claude Code prima/dopo ogni tool call.
-- `.claude/commands/` — slash commands personalizzati (`add-doc`).
+- `.claude/hooks/` — script Python eseguiti da Claude Code a inizio sessione e prima/dopo le tool call.
+- `.claude/commands/` — slash commands personalizzati (`add-doc`, `archive`).
 - `.claude/skills/` — skill locali (`graphify`, `openspec-*`, `karpathy-guidelines`).
 - `.claude/settings.json` — configurazione permessi, modelli e hooks.
 - `.claude/statusline-command.sh` — statusline personalizzata.
