@@ -38,21 +38,32 @@ Every line of code you write must be something Zoran Horvat would approve of.
 - THINK FIRST: For complex architectural changes or bug fixes, reason internally before writing code. Internal reasoning never appears in the output.
 - DEFAULT TO ACTION is complementary: output code directly — no preamble, no "I will now do X". THINK FIRST happens silently before the first token of output.
 
+**PROMPT & DATA FIDELITY (non-negotiable):**
+
+- Treat the prompt and the supplied data as immutable source of truth. Never rewrite, "improve", reinterpret, or silently widen/narrow the request. Solve exactly what was asked — nothing more, nothing less.
+- Never invent, alter, or fabricate input data, parameters, signatures, types, or file contents. If a value, type, or API is unknown, read the real source (e.g. `PopLogic.cs`) — do not assume its shape.
+- Every assumption, hypothesis, and plan step must be proven against the actual prompt and the real code/data it touches, cited as `file.cs:line`. An unverified assumption is a stop condition: verify it before writing any code.
+- When the prompt is ambiguous or under-specified, surface the ambiguity and ask — do not paper over it with a guess.
+- Run a counter-proof on every conclusion: state what would falsify it, then confirm the real code/data does not falsify it.
+
 </system_constraints>
 
 ## Agentic System
 
 Always elaborate and process user requests as follows:
 
-1. Analyze the request.
-2. Find context: gather all related code, dependencies, and call sites.
-3. Plan the implementation. Use plan mode for multi-file or architectural changes; skip it for single-file fixes and OpenSpec flows.
-4. For solution-wide tasks (multi-project refactors, mass migrations), evaluate if a **team of agents** or an **agent loop** improves the result. Skip for ordinary changes.
-5. **Impact Analysis (mandatory before any modification):**
+1. **Analyze the request.** Restate the literal goal in one line. Do not add, drop, or reinterpret any requirement (see PROMPT & DATA FIDELITY).
+2. **Find context:** gather all related code, dependencies, and call sites. Read the actual targets (e.g. `PopLogic.cs`) — never assume their shape.
+3. **Plan the implementation.** Use plan mode for multi-file or architectural changes; skip it for single-file fixes and OpenSpec flows.
+4. **Conformance check (mandatory):** prove every assumption, hypothesis, and plan step against the prompt and the real code/data it touches. List each one with its confirming `file.cs:line`. Any unconfirmed item is a stop condition — verify it before continuing. Never proceed on a guess.
+5. For solution-wide tasks (multi-project refactors, mass migrations), evaluate if a **team of agents**, an **agent loop**, or an **agent swarm** improves the result. Skip for ordinary changes.
+6. **Impact Analysis (mandatory before any modification):**
    - Trace every caller, subscriber, and dependent of the objects/functions being modified.
    - Diff review happens in plan mode and in Visual Studio's Git Changes window (see workflow.md) — do not paste full diffs in chat.
-6. Produce the modification.
-7. For non-trivial changes, write **one summary file per change** in `.\.claude\claude-archive\` (`YYYY-MM-DD-<slug>.md`) covering what changed and why — or run `/archive`. This is the project's local change history (gitignored, not synced by `sync.ps1`); it is **never** a single ever-growing log.
+7. **Test-first gate (mandatory):** invoke `/tdd` to orchestrate the full Red→Green→Refactor cycle. The locked-test contract (`tdd-verification.md §2`) is always active — tests are never weakened, deleted, or rewritten to make code pass.
+8. **Produce the modification** — write only the code needed to satisfy the locked tests, in conformance with the rules in `.claude/rules/`.
+9. **Run & verify:** `/tdd` handles this. Done = build clean + every locked test green + results match prompt expectations.
+10. For non-trivial changes, write **one summary file per change** in `.\.claude\claude-archive\` (`YYYY-MM-DD-<slug>.md`) covering what changed and why — or run `/archive`. This is the project's local change history (gitignored, not synced by `sync.ps1`); it is **never** a single ever-growing log.
 
 ## Tech Stack
 
@@ -106,6 +117,11 @@ All coding rules are in `.claude/rules/`. Key files:
 - **ui-controls.md** — WinForms lifecycle, controls, dialogs, localization
 - **workflow.md** — build/test commands, team workflow
 - **tests.md** — test naming, AAA structure, AsyncPayload assertions, allowed mocks
+- **tdd-verification.md** — prompt/data fidelity (always-on), locked-test contract (always-on)
+
+Skills (invoke explicitly):
+
+- **`/tdd`** — orchestrates Red→Green→Refactor cycle, sandbox spike, run & verify checklist
 
 ## graphify
 
