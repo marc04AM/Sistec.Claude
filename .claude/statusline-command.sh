@@ -62,10 +62,10 @@ parts=()
 [ -n "$ctx" ]      && parts+=("$ctx")
 
 sep=" ${DIM}${GRAY}${PL}${RESET} "
-out="Sistec.Claude "
+out="Sistec.Claude V3"
 for i in "${!parts[@]}"; do
     (( i > 0 )) && out+="$sep"
     out+="${parts[$i]}"
 done
-out+=" stai usando le configurazioni claude di Sistec AM"
+out+=""
 printf '%s' "$out"
