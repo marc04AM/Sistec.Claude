@@ -95,10 +95,6 @@ Apply these before everything else, on every request.
 1. **Recall before reading.** Before reading any file, first recall what is already known (claude-mem, when installed) and use graphify to traverse the codebase. Start from what you already know.
 2. **Don't re-read what you already know.** Only read what is genuinely new or unverified.
 
-## Governance
-
-- **Ported-first.** When a class exists as a canonical + a ported copy, edit only the ported copy. Leave the canonical untouched until the change is validated, then sync it back as a separate step; note any divergence created between copies.
-
 ---
 
 ## Quick Reference
